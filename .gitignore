@@ -1,3 +1,7 @@
+# 의존성 / 빌드 결과
+node_modules/
+dist/
+
 # OS
 Thumbs.db
 desktop.ini
@@ -8,7 +12,11 @@ desktop.ini
 .idea/
 *.swp
 
+# 로그
+npm-debug.log*
+*.log
+
 # 퍼즐에 쓰는 개인 이미지는 올리지 않습니다 (저작권 · 용량)
-# 공개해도 되는 그림이면 아래 줄을 지우세요.
-images/*
-!images/README.md
+# 공개해도 되는 그림이면 아래 두 줄을 지우세요.
+public/images/*
+!public/images/README.md
