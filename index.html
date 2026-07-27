@@ -1,68 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🐻 곰돌이 직소 퍼즐</title>
-  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <header>
-    <h1>🐻 곰돌이 직소 퍼즐</h1>
-    <p class="sub">조각을 <b>드래그</b>하거나, <b>톡 눌러 고른 뒤</b> 놓을 자리를 누르세요</p>
-  </header>
-
-  <!-- 난이도 · 도구 -->
-  <div class="toolbar">
-    <div class="seg" id="sizes">
-      <button data-size="2">2×2</button>
-      <button data-size="3" class="on">3×3</button>
-      <button data-size="4">4×4</button>
-      <button data-size="5">5×5</button>
-    </div>
-
-    <button class="btn" id="shuffle">🔀 다시 섞기</button>
-    <button class="btn" id="peek">👀 미리보기</button>
-
-    <label class="btn file">
-      🖼️ 이미지 바꾸기
-      <input type="file" id="file" accept="image/*" hidden>
-    </label>
-  </div>
-
-  <!-- 현황판 -->
-  <div class="stats">
-    <div class="stat"><span class="k">시간</span><span class="v" id="time">00:00</span></div>
-    <div class="stat"><span class="k">이동</span><span class="v" id="moves">0</span></div>
-    <div class="stat"><span class="k">남은 조각</span><span class="v" id="left">9</span></div>
-  </div>
-
-  <!-- 퍼즐판 -->
-  <div class="board-wrap">
-    <div class="board" id="board"></div>
-    <div class="preview" id="preview" hidden></div>
-  </div>
-
-  <!-- 조각 트레이 -->
-  <p class="tray-label">조각 트레이</p>
-  <div class="tray" id="tray"></div>
-
-  <p class="hint" id="hint">
-    <code>images/</code> 폴더에 <code>bear.png</code>(또는 .jpg)를 넣으면 자동으로 그 그림이 쓰여요.
-    지금은 <b>🖼️ 이미지 바꾸기</b> 버튼이 제일 빨라요.
-  </p>
-
-  <!-- 완성 축하 -->
-  <div class="win" id="win" hidden>
-    <div class="win-card">
-      <div class="win-bear">🐻</div>
-      <h2>완성!</h2>
-      <p class="win-line"><span id="winTime">–</span> 만에 <span id="winMoves">–</span>번 움직여서 맞췄어요</p>
-      <button class="btn primary" id="again">한 판 더 🔁</button>
-    </div>
-  </div>
-
-  <script src="game.js"></script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
