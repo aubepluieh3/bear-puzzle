@@ -264,6 +264,12 @@ h1 {
   backdrop-filter: blur(3px);
 }
 
+/* display 를 직접 지정한 요소는 hidden 속성이 먹지 않습니다.
+   (작성자 스타일이 브라우저 기본 [hidden]{display:none} 을 이김)
+   그래서 hidden 일 때를 명시적으로 다시 눌러줍니다. */
+.win[hidden],
+.preview[hidden] { display: none; }
+
 .win-card {
   padding: 32px 40px;
   text-align: center;
