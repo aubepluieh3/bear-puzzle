@@ -16,7 +16,8 @@ npm run dev
 | 명령 | 하는 일 |
 |---|---|
 | `npm run dev` | 개발 서버 (파일 고치면 화면이 바로 바뀝니다) |
-| `npm test` | 게임 규칙 테스트 |
+| `npm test` | 게임 규칙 테스트 (브라우저 없이) |
+| `npm run test:e2e` | 진짜 브라우저로 조작해보는 테스트 — `npm run dev` 를 켜 둔 상태에서 |
 | `npm run build` | `dist/` 로 빌드 |
 | `npm run preview` | 빌드 결과 확인 |
 
@@ -84,8 +85,30 @@ bear-puzzle/
 │   └── components/
 │       ├── Board.jsx  Tray.jsx  Piece.jsx
 │       └── Toolbar.jsx  Stats.jsx  WinOverlay.jsx
-└── test/puzzle.test.js     puzzle.js 테스트 (브라우저 없이 돌아감)
+├── test/puzzle.test.js     게임 규칙 테스트 (브라우저 없이 돌아감)
+└── e2e/puzzle.e2e.mjs      진짜 브라우저로 드래그까지 해보는 테스트
 ```
+
+## 테스트
+
+**규칙 테스트** — `npm test`
+`src/lib/puzzle.js` 가 DOM 을 모르는 순수 함수라서 브라우저 없이 바로 돌아갑니다.
+
+**브라우저 테스트** — `npm run dev` 를 켜 두고 `npm run test:e2e`
+이미 깔려 있는 **Edge** 를 원격 조종해서 실제로 조각을 드래그하고, 탭으로 옮기고,
+틀리게 채워 팝업을 확인하고, 미리보기 횟수까지 눌러봅니다.
+화면 캡처가 `e2e/shots/` 에 남으니 눈으로도 확인할 수 있습니다.
+
+> 브라우저를 따로 내려받지 않습니다 (`playwright-core` + 설치된 Edge).
+
+### 브라우저 테스트를 쓸 때 걸려 넘어졌던 것
+
+- **`page.mouse` 는 자동 스크롤을 안 합니다.** `locator.click()` 과 달라서, 트레이 조각이
+  줄바꿈되어 화면 밖으로 밀려나면 드래그가 *조용히* 실패합니다. 넉넉한 뷰포트를 쓰고
+  좌표가 화면 안인지 확인합니다.
+- **조작 직후에는 화면이 아직 예전 상태입니다.** `mouse.up()` 이 끝나도 React 는 아직
+  다시 그리지 않았습니다. 결과가 반영될 때까지 기다려야 합니다.
+- **캡처는 애니메이션이 끝난 뒤에.** 안 그러면 팝업이 반투명한 중간 상태로 찍힙니다.
 
 ### 핵심 아이디어
 

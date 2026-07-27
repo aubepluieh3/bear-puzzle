@@ -16,6 +16,9 @@ desktop.ini
 npm-debug.log*
 *.log
 
+# e2e 가 남기는 화면 캡처
+e2e/shots/
+
 # 퍼즐에 쓰는 개인 이미지는 올리지 않습니다 (저작권 · 용량)
 # 공개해도 되는 그림이면 아래 두 줄을 지우세요.
 public/images/*
