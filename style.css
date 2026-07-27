@@ -1,0 +1,290 @@
+/* ===========================================================
+   곰돌이 직소 퍼즐 — 스타일
+   색은 전부 아래 변수로 모아뒀어요. 여기만 바꾸면 테마가 바뀝니다.
+   =========================================================== */
+
+:root {
+  --cream:  #FFF7EC;
+  --card:   #FFFFFF;
+  --slot:   #F3E7D6;
+  --honey:  #E9A23B;
+  --ink:    #4A3728;
+  --muted:  #9C8674;
+  --line:   #EADFD0;
+  --shadow: 0 2px 10px rgba(120, 86, 52, .12);
+}
+
+/* 다크 모드 — OS 설정을 따라갑니다 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cream:  #221B15;
+    --card:   #2E251E;
+    --slot:   #3A2E25;
+    --honey:  #F0B155;
+    --ink:    #F2E7DA;
+    --muted:  #A8927E;
+    --line:   #3E322A;
+    --shadow: 0 2px 12px rgba(0, 0, 0, .4);
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 24px 16px 48px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Pretendard", "Malgun Gothic", system-ui, -apple-system, sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ---------- 헤더 ---------- */
+header { text-align: center; }
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 5vw, 2.1rem);
+  letter-spacing: -.02em;
+}
+
+.sub {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: .875rem;
+}
+
+/* ---------- 툴바 ---------- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  padding: 9px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: .875rem;
+  cursor: pointer;
+  transition: transform .1s, border-color .15s;
+}
+
+.btn:hover  { border-color: var(--honey); }
+.btn:active { transform: translateY(1px); }
+
+.btn.primary {
+  background: var(--honey);
+  border-color: var(--honey);
+  color: #2A1B0C;
+  font-weight: 700;
+  padding: 11px 22px;
+}
+
+.btn.file { display: inline-flex; align-items: center; }
+
+/* 난이도 세그먼트 */
+.seg {
+  display: flex;
+  padding: 3px;
+  gap: 2px;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 11px;
+}
+
+.seg button {
+  padding: 7px 11px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: .8125rem;
+  cursor: pointer;
+}
+
+.seg button.on {
+  background: var(--honey);
+  color: #2A1B0C;
+  font-weight: 700;
+}
+
+/* ---------- 현황판 ---------- */
+.stats { display: flex; gap: 10px; }
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: 76px;
+  padding: 8px 14px;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+}
+
+.stat .k { font-size: .6875rem; color: var(--muted); }
+.stat .v { font-size: 1.0625rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ---------- 퍼즐판 ---------- */
+.board-wrap { position: relative; }
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 3), var(--piece, 100px));
+  gap: 3px;
+  padding: 7px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  transition: gap .35s ease;
+}
+
+.cell {
+  width: var(--piece, 100px);
+  height: var(--piece, 100px);
+  border-radius: 5px;
+  background: var(--slot);
+  transition: box-shadow .12s, border-radius .35s ease;
+}
+
+/* 드래그해서 위에 올라온 칸 */
+.cell.over { box-shadow: inset 0 0 0 3px var(--honey); }
+
+/* 완성되면 틈이 사라지면서 한 장의 그림이 됩니다 */
+.board.solved { gap: 0; }
+.board.solved .cell { border-radius: 0; }
+.board.solved { animation: pop .45s ease; }
+
+@keyframes pop {
+  50% { transform: scale(1.035); }
+}
+
+/* 미리보기 오버레이 */
+.preview {
+  position: absolute;
+  inset: 7px;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  opacity: .62;
+  pointer-events: none;
+}
+
+/* ---------- 조각 ---------- */
+.piece {
+  border-radius: 5px;
+  background-repeat: no-repeat;
+  cursor: grab;
+  touch-action: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .18);
+}
+
+.piece.selected { outline: 3px solid var(--honey); outline-offset: -3px; }
+.piece.dragging { opacity: .22; }
+
+/* 커서를 따라다니는 복제 조각 */
+.ghost {
+  position: fixed;
+  z-index: 99;
+  pointer-events: none;
+  opacity: .92;
+  transform: scale(1.07) rotate(-2.5deg);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .32);
+}
+
+/* ---------- 트레이 ---------- */
+.tray-label {
+  margin: 2px 0 -6px;
+  color: var(--muted);
+  font-size: .75rem;
+  letter-spacing: .04em;
+}
+
+.tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  width: min(560px, 100%);
+  min-height: 76px;
+  padding: 12px;
+  background: var(--card);
+  border: 2px dashed var(--line);
+  border-radius: 16px;
+}
+
+.tray:empty::after {
+  content: "조각을 여기로 되돌릴 수 있어요";
+  color: var(--muted);
+  font-size: .8125rem;
+}
+
+/* ---------- 안내문 ---------- */
+.hint {
+  max-width: 480px;
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: .8125rem;
+  line-height: 1.6;
+}
+
+.hint code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--slot);
+  color: var(--ink);
+  font-size: .9em;
+}
+
+/* ---------- 완성 축하 ---------- */
+.win {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: rgba(40, 28, 18, .55);
+  backdrop-filter: blur(3px);
+}
+
+.win-card {
+  padding: 32px 40px;
+  text-align: center;
+  background: var(--card);
+  border-radius: 22px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .3);
+  animation: rise .3s ease;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px) scale(.96); }
+}
+
+.win-bear { font-size: 3.5rem; animation: bounce 1s ease infinite; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-11px); }
+}
+
+.win-card h2 { margin: 6px 0 4px; font-size: 1.6rem; }
+
+.win-line { margin: 0 0 20px; color: var(--muted); font-size: .9375rem; }
+.win-line span { color: var(--honey); font-weight: 700; }

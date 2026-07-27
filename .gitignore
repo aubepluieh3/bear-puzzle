@@ -1,0 +1,14 @@
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# 에디터
+.vscode/
+.idea/
+*.swp
+
+# 퍼즐에 쓰는 개인 이미지는 올리지 않습니다 (저작권 · 용량)
+# 공개해도 되는 그림이면 아래 줄을 지우세요.
+images/*
+!images/README.md
