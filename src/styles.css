@@ -87,6 +87,25 @@ h1 {
 .btn:hover  { border-color: var(--honey); }
 .btn:active { transform: translateY(1px); }
 
+.btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  border-color: var(--line);
+}
+
+.btn:disabled:active { transform: none; }
+
+/* 미리보기 남은 횟수 */
+.btn .count {
+  margin-left: 2px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--slot);
+  color: var(--muted);
+  font-size: .75rem;
+  font-variant-numeric: tabular-nums;
+}
+
 .btn.primary {
   background: var(--honey);
   border-color: var(--honey);
@@ -252,19 +271,21 @@ h1 {
   font-size: .9em;
 }
 
-/* ---------- 완성 축하 ---------- */
-.win {
+/* ---------- 팝업 (완성 축하 · 오답 알림 공용) ---------- */
+.overlay {
   position: fixed;
   inset: 0;
   z-index: 200;
   display: grid;
   place-items: center;
+  padding: 16px;
   background: rgba(40, 28, 18, .55);
   backdrop-filter: blur(3px);
 }
 
-.win-card {
-  padding: 32px 40px;
+.overlay-card {
+  max-width: min(92vw, 400px);
+  padding: 30px 36px;
   text-align: center;
   background: var(--card);
   border-radius: 22px;
@@ -276,14 +297,38 @@ h1 {
   from { opacity: 0; transform: translateY(14px) scale(.96); }
 }
 
-.win-bear { font-size: 3.5rem; animation: bounce 1s ease infinite; }
+.overlay-card h2 { margin: 6px 0 4px; font-size: 1.6rem; }
+
+.overlay-line {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: .9375rem;
+}
+
+.overlay-line span { color: var(--honey); font-weight: 700; }
+
+.overlay-note {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: .8125rem;
+  line-height: 1.6;
+}
+
+.overlay-emoji { font-size: 3.5rem; }
+
+/* 완성했을 때는 곰이 통통 튀고, 틀렸을 때는 고개를 젓습니다 */
+.overlay.win   .overlay-emoji { animation: bounce 1s ease infinite; }
+.overlay.wrong .overlay-emoji { animation: shake .55s ease; }
 
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-11px); }
 }
 
-.win-card h2 { margin: 6px 0 4px; font-size: 1.6rem; }
-
-.win-line { margin: 0 0 20px; color: var(--muted); font-size: .9375rem; }
-.win-line span { color: var(--honey); font-weight: 700; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  20%      { transform: translateX(-7px) rotate(-5deg); }
+  40%      { transform: translateX(7px) rotate(5deg); }
+  60%      { transform: translateX(-5px) rotate(-3deg); }
+  80%      { transform: translateX(5px) rotate(3deg); }
+}

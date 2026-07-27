@@ -52,6 +52,20 @@ export function remaining({ board, tray }) {
   return tray.length + board.filter((piece, i) => piece !== null && piece !== i).length;
 }
 
+/** 조각은 다 놓았는데 자리가 틀린 상태 — "아직 아니에요" 를 띄울 때입니다. */
+export function isFullButWrong({ tray, solved }) {
+  return tray.length === 0 && !solved;
+}
+
+/**
+ * 미리보기를 몇 번 볼 수 있는지.
+ *   2x2 → 0번 (4조각은 힌트가 필요 없음)
+ *   3x3 → 1번,  4x4 → 2번,  5x5 → 3번
+ */
+export function peekLimit(gridSize) {
+  return Math.max(0, gridSize - 2);
+}
+
 /**
  * 조각을 옮긴 새 상태를 돌려줍니다. 원본은 건드리지 않습니다.
  * 옮길 수 없는 경우에는 받은 상태를 그대로 돌려주므로,

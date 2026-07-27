@@ -7,6 +7,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   createGame, movePiece, isSolved, remaining, fitSizes, formatTime,
+  isFullButWrong, peekLimit,
 } from '../src/lib/puzzle.js';
 
 const fromTray = piece => ({ piece, zone: 'tray' });
@@ -142,6 +143,36 @@ test('formatTime 은 분:초로 두 자리씩 맞춘다', () => {
   assert.equal(formatTime(9_400), '00:09');
   assert.equal(formatTime(65_000), '01:05');
   assert.equal(formatTime(600_000), '10:00');
+});
+
+test('isFullButWrong 은 다 채웠지만 틀렸을 때만 참이다', () => {
+  let g = createGame(2);
+  assert.equal(isFullButWrong(g), false, '시작 상태');
+
+  g = movePiece(g, fromTray(0), toCell(1));
+  g = movePiece(g, fromTray(1), toCell(0));
+  g = movePiece(g, fromTray(2), toCell(2));
+  assert.equal(isFullButWrong(g), false, '아직 트레이에 조각이 남았다');
+
+  g = movePiece(g, fromTray(3), toCell(3));
+  assert.equal(isFullButWrong(g), true, '다 놓았지만 두 조각이 틀렸다');
+  assert.equal(remaining(g), 2);
+
+  g = movePiece(g, onBoard(0, 1), toCell(0));
+  assert.equal(g.solved, true);
+  assert.equal(isFullButWrong(g), false, '완성했으면 오답이 아니다');
+});
+
+test('미리보기 횟수는 난이도에 따라 0 / 1 / 2 / 3 번', () => {
+  assert.equal(peekLimit(2), 0, '2x2 는 힌트 없이');
+  assert.equal(peekLimit(3), 1);
+  assert.equal(peekLimit(4), 2);
+  assert.equal(peekLimit(5), 3);
+});
+
+test('미리보기 횟수는 음수가 되지 않는다', () => {
+  assert.equal(peekLimit(1), 0);
+  assert.equal(peekLimit(0), 0);
 });
 
 test('fitSizes 는 좁은 창에서도 최소 크기를 지킨다', () => {
